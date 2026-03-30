@@ -1,0 +1,25 @@
+sum of list elements
+largest element of list
+remove the duplicate in a list
+check if all the element in list are unique
+program to reverse a list
+count number of odd & even element in list
+maximum difference between two consecutive element in list
+rotate a list
+check if a list is a subset of another list
+sum of N even natural number
+check for even number & prime number 
+valid perfect square
+
+reverse String
+check palindromne
+count words in string
+remove duplicate in a string
+check for anagrams
+check for subsequence
+
+is array sorted?
+moves zeros
+intersection of two list
+max consequetives ones
+maximum subarray sum
