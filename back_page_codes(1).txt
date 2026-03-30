@@ -1,0 +1,22 @@
+factorial
+factors
+fibonacci
+sum of digits
+reverse a numbers
+check if a given number appears in a list and get the last element of list
+remove puntuation from string sentence
+create a 2D Array & element should i*j
+matrix multiplication
+sort the words of a sentence
+illustrate different set operations
+count the number of vowels in sentence using dictionary 
+merge two dictionary
+sort dictionary by values and key
+check if the list is empty
+write a a function count_code that return the no. of times that the string "code" appears anywhere in a given string , except we'll accept any letter for the'd' , so "cope" and "cooe" count
+WAP to print the longest substring
+exception handling
+4+44+444+................
+WAP to function that accepts two integers n & m as arguments . find the sum of all the numbers in the range from 1 to m(both inclusive) that are not divisible by n . return difference b/w sum of integers not divisible by n with sum of numbers divisible by n
+WAP  that prints number of times the string "bob" occurs in s
+enumerate function
