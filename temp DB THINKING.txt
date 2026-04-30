@@ -1,0 +1,118 @@
+ Here's everything from the last session in one place — the two tables we   
+  designed, plus the framework we agreed on for thinking like an engineer    
+  when designing any table.
+
+  ---                                                                        
+  The two tables we designed (paper sketch)
+                                                                             
+  Category        
+  ──────────────────
+  id    │ (auto)
+  name  │ "Django"          ← what the reader sees
+  slug  │ "django"          ← what shows up in the URL
+
+  Post
+  ──────────────────────────────────────────────────────────
+  id              │ (auto)
+  title           │ short text
+  body            │ long text
+  author          │ → User      required.   on delete: CASCADE
+  category        │ → Category  optional.   on delete: SET NULL
+  created_at      │ timestamp.  set once at row birth
+  updated_at      │ timestamp.  re-set on every save
+  published       │ true/false. default = true
+  views           │ ≥ 0.        default = 0
+  search_vector   │ pre-chewed search index. empty for now
+
+  Why each column exists (in one line each):
+
+  - name / slug — humans need readable text, URLs need lowercase-no-spaces.
+  Split them.
+  - title / body — short headline vs long content. Different storage types.
+  - author — pointer (foreign key) to a row in the User table. Lives on the
+  "many" side of one-user-many-posts.
+  - category — same shape as author, but optional (NULL means uncategorized).
+  - created_at — set once when the row is born. Never changes.
+  - updated_at — re-stamped every time the row is saved.
+  - published — boolean flag for drafts. Hides drafts from the homepage with
+  WHERE published = true.
+  - views — counter. Starts at 0. Race-condition fix comes later (concept
+  #10).
+  - search_vector — pre-computed search blob. Empty for now; concept #8 fills
+   it in.
+
+  The two delete rules, paired with reader experience:
+
+  ┌─────────────┬───────────────────────┬────────────────────────────────┐
+  │ What gets   │ What happens to the   │              Why               │
+  │   deleted   │         post          │                                │
+  ├─────────────┼───────────────────────┼────────────────────────────────┤
+  │             │ The post goes too     │ "by [deleted user]" looks      │
+  │ The user    │ (CASCADE)             │ ghostly. Clean delete is what  │
+  │             │                       │ the reader expects.            │
+  ├─────────────┼───────────────────────┼────────────────────────────────┤
+  │ The         │ The post survives,    │ The post didn't do anything    │
+  │ category    │ loses its badge (SET  │ wrong — only the label is      │
+  │             │ NULL)                 │ going away.                    │
+  └─────────────┴───────────────────────┴────────────────────────────────┘
+
+  Important pairing: SET NULL only works if the field is optional. The two
+  halves of the same decision.
+
+  ---
+  The engineer's framework — how to think when designing any table
+
+  Use this every time a new feature comes up. It's the same routine whether
+  you're designing posts, comments, orders, or anything else.
+
+  The four questions, in order
+
+  1. What does the system have to remember between visits?
+  Each "thing" the site needs to remember becomes a table.
+  (Blog → Posts, Users, Categories.)
+
+  2. For each thing, what do I need to know about it?
+  Each real question becomes a field. No question, no field.
+  (For a Post: who wrote it? what's the title? when was it created?)
+
+  3. For each field, decide three things:
+  - Type? — short text / long text / number / boolean / date / link
+  - Required or optional? — Ask: can this thing exist in the real world
+  without this value?
+  - Default value? — If the user doesn't supply one, what's the sensible
+  starting state?
+
+  4. For every foreign key, what happens on delete?
+  CASCADE / SET NULL / PROTECT.
+  Pick by asking: what should the reader of the site experience when the
+  parent disappears?
+
+  Six rules of thumb on top
+
+  1. Don't repeat the same value across rows. Extract it to its own table.
+  (That's the categories lesson, generalized — the word "normalization.")
+  2. Don't add fields "in case." Every field is a maintenance cost. If you
+  don't have a real reason for it, don't add it.
+  3. Every row gets a unique auto id. Don't use email or slug as the
+  identifier — those change.
+  4. Timestamps are almost always worth having. created_at is rarely a
+  regret.
+  5. Performance fields come last. views, search_vector, computed counters —
+  plain fields first, optimization only when there's a real reason.
+  6. Required vs optional follows the real world, not the form. If a value
+  can legitimately be blank in real life, the field is optional.
+
+  ---
+  The compass that points the way through all of it
+
+  Reader-POV thinking. Every "what should happen on delete?" question, every
+  "required or optional?" question, every "should this be its own table?"
+  question — they all answer themselves when you stop asking "what does the
+  developer have to do?" and start asking "what should the reader of the site
+   experience?"
+
+  That single shift is what made the categories story click, what made
+  CASCADE-vs-SET-NULL obvious, and what makes you a designer instead of a
+  stenographer for whatever the form happens to ask.
+
+  ---
