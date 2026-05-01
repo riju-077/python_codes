@@ -116,3 +116,35 @@
   stenographer for whatever the form happens to ask.
 
   ---
+  YouTube
+                                                                                                                                               
+  CASCADE — channel deleted.
+  A YouTuber decides to close their channel. They had 200 videos.                                                                              
+  - What happens? All 200 videos disappear with the channel.
+  - Reader-POV: you click an old link, you see "This video is unavailable. Channel deleted."
+  - Why it feels right: a video can't really "exist" with no creator behind it. Kill the channel → kill its videos. Cascade.
+
+  SET NULL — category retired.
+  YouTube decides "Travel & Events" isn't a useful category anymore and removes it. There were thousands of videos in that category.
+  - What happens? The videos stay. They still play perfectly. They just lose that little category badge under the title.
+  - Reader-POV: you don't even notice. The video plays like always; one piece of metadata is just gone.
+  - Why it feels right: the videos aren't broken just because a label disappeared. Keep the videos, set their category to NULL.
+
+  ---
+  Same split, mapped back to your blog:
+
+  ┌──────────────────────────┬──────────────────────────┬──────────────────────────────────────────────────────┐
+  │     Parent goes away     │ What happens to children │                         Why                          │
+  ├──────────────────────────┼──────────────────────────┼──────────────────────────────────────────────────────┤
+  │ YouTube channel deleted  │ Videos disappear         │ Video makes no sense without its creator → CASCADE   │
+  ├──────────────────────────┼──────────────────────────┼──────────────────────────────────────────────────────┤
+  │ User account deleted     │ Posts disappear          │ Same shape → CASCADE                                 │
+  ├──────────────────────────┼──────────────────────────┼──────────────────────────────────────────────────────┤
+  │ YouTube category retired │ Videos stay, lose badge  │ Video is still readable without the label → SET NULL │
+  ├──────────────────────────┼──────────────────────────┼──────────────────────────────────────────────────────┤
+  │ Blog category deleted    │ Posts stay, lose badge   │ Same shape → SET NULL                                │
+  └──────────────────────────┴──────────────────────────┴──────────────────────────────────────────────────────┘
+
+  The decision rule is always the same one question: "Without the parent, is the child still meaningful to a reader?"
+  - No → CASCADE
+  - Yes → SET NULL
