@@ -15,12 +15,10 @@ reverse String
 check palindromne
 count words in string
 remove duplicate in a string
-check for anagrams
 check for subsequence
 
 is array sorted?
 moves zeros
 intersection of two list
 max consequetives ones
-maximum subarray sum
-more problems from (youtube)
+
