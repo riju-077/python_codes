@@ -19,6 +19,8 @@ write a a function count_code that return the no. of times that the string "code
 WAP to print the longest substring
 exception handling
 
+https://colab.research.google.com/drive/1_P6xYFVDGbQqqZAJ7nWm6CXeXiDmM7Py
+
 4+44+444+................
 WAP to function that accepts two integers n & m as arguments . find the sum of all the numbers in the range from 1 to m(both inclusive) that are not divisible by n . return difference b/w sum of integers not divisible by n with sum of numbers divisible by n
 WAP  that prints number of times the string "bob" occurs in s
